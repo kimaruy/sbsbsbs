@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>고객센터</title>
+</head>
+<body>
+<div>
+    <!-- Q&A 버튼 -->
+    <a th:href="@{/question/qna_list}" class="btn btn-primary">Q&A</a>
+
+    <!-- 신고 센터 버튼 -->
+    <a th:href="@{/question/report}" class="btn btn-danger">신고 센터</a>
+
+    <!-- 제휴 센터 버튼 -->
+    <a th:href="@{/question/affiliate}" class="btn btn-success">제휴 센터</a>
+</div>
+</body>
+</html>

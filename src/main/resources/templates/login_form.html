@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+    <link rel="stylesheet" href="/login.css">
+
+    <!-- SweetAlert 2 스크립트 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+
+<!-- 로그인 -->
+<div layout:fragment="content" class="input-login-box">
+    <a href="/"><h1>뭐하지 또? 또가지 뭐!</h1></a>
+    <div class="login-top-box">
+        <form th:action="@{/user/login}" method="post"  >
+            <div class="form-box">
+                <div th:if="${param.error}">
+                    <script >
+                        var errorParam = '[[${param.error}]] ';
+                        var errorMessage = "아이디 또는 비밀번호를 확인해 주세요.";
+
+                        if (errorParam === "Bad credentials") {
+                            errorMessage = "아이디 또는 비밀번호가 일치하지 않습니다.";
+                        }
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: '로그인 오류',
+                            text: errorMessage
+                        });
+                    </script>
+                </div>
+                <div class="id-icon-box icon-box">
+                    <label for="username" class="form-label"></label>
+                    <i class="fa-regular fa-user"></i>
+                    <input class="id-box" type="text" placeholder="아이디를 입력해주세요" name="username" id="username"
+                           autocomplete="on" required>
+                </div>
+                <div class="pass-icon-box icon-box">
+                    <label for="password" class="form-label"></label>
+                    <i class="fa-solid fa-key"></i>
+                    <input class="pass-box" type="password" name="password" id="password"
+                           placeholder="비밀번호를 입력해주세요" required>
+                </div>
+
+                <div><input class="check-box" type="checkbox"> <span>로그인 기억하기</span></div>
+
+                <button class="submit" type="submit" >로그인</button>
+
+
+            </div>
+
+        </form>
+
+    </div>
+    <div class="text-box">
+        <a class="id" href="#" title="아이디 찾기"><span>아이디 찾기</span></a>
+        <a class="password" href="#" title="비밀번호 찾기"><span>비밀번호 찾기</span></a>
+        <a class="join" th:href="@{/user/signup}" title="회원가입"><span>회원가입</span></a>
+    </div>
+</div>
+<!-- 로그인 끝 -->
+
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/signup.css">
+</head>
+
+<body>
+<div layout:fragment="content" class="container my-3" style="margin-top: 300px !important; margin-bottom: 100px !important;">
+    <div class="join-box">
+        <p class="logo-text">뭐하지 또? 또 가지 뭐!</p>
+        <h1>회원가입</h1>
+        <!-- 회원가입 폼 -->
+        <form th:action="@{/user/signup}" th:object="${userCreateForm}" method="post">
+            <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+            <div class="form-box">
+                <div class="join-icon-box">
+                    <i class="id fa-regular fa-user"></i>
+                    <input type="text" th:field="*{username}" placeholder="아이디를 입력하세요" class="id-box" id="username">
+                    <button id="checkUsernameBtn" class="submit">아이디 확인</button>
+                    <p id="usernameAvailability" class="availability-text"></p>
+                </div>
+                <div class="join-icon-box">
+                    <i class="ps fa-solid fa-key"></i>
+                    <input type="password" th:field="*{password1}" placeholder="비밀번호를 입력하세요" class="pass-box">
+                    <p class="p-text">영어, 특수문자, 숫자를 모두 포함시켜주세요</p>
+                </div>
+                <div class="join-icon-box">
+                    <i class="ps fa-solid fa-key"></i>
+                    <input type="password" th:field="*{password2}" placeholder="비밀번호를 다시 입력하세요" class="pass-box">
+                    <p class="p-text">영어, 특수문자, 숫자를 모두 포함시켜주세요</p>
+                </div>
+                <div class="join-icon-box">
+                    <i class="name fa-solid fa-envelope"></i>
+                    <input type="text" th:field="*{email}" placeholder="이메일을 입력하세요" class="niname-box">
+                </div>
+                <div class="join-icon-box">
+                    <i class="name fa-regular fa-user"></i>
+                    <input type="text" th:field="*{name}" placeholder="이름을 입력하세요" class="name-box">
+                </div>
+                <div class="join-icon-box">
+                    <i class="name fa-regular fa-circle-user"></i>
+                    <input type="text" th:field="*{nickname}" placeholder="닉네임을 입력하세요" class="niname-box">
+                </div>
+                <div class="join-icon-box">
+                    <i class="name fa-solid fa-heart"></i>
+                    <input type="text" th:field="*{birthdate}" placeholder="생년월일을 입력하세요" class="bir-box" id="birthdateInput">
+                </div>
+                <div class="join-icon-box">
+                    <i class="name fa-solid fa-phone-volume"></i>
+                    <select name="통신사" th:field="*{telecom}" id="통신사">
+                        <option value="" selected>통신사 선택</option>
+                        <option value="KT">KT</option>
+                        <option value="LGU+">LGU+</option>
+                        <option value="SKT">SKT</option>
+                    </select>
+                </div>
+
+                <div class="join-icon-box">
+                    <i class="name fa-solid fa-tablet-screen-button"></i>
+                    <input type="tel" th:field="*{phone}" placeholder="전화번호" class="phone-box">
+                </div>
+
+                <p class="text">
+                    <input type="checkbox" class="agree-box" id="privacyCheckbox"> 개인정보 수집 및 이용 내용을 확인하였으며, 동의합니다.
+                </p>
+
+                <button type="submit" class="submit">회원가입하기</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- 아이디 중복 체크 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const usernameInput = document.getElementById("username");
+            const checkUsernameBtn = document.getElementById("checkUsernameBtn");
+            const usernameAvailability = document.getElementById("usernameAvailability");
+
+            checkUsernameBtn.addEventListener("click", function () {
+                event.preventDefault(); // 기본 동작인 페이지 새로고침을 막습니다.
+                const username = usernameInput.value;
+
+                // 아이디 중복 체크 함수 호출
+                checkUsernameAvailability(username);
+            });
+
+            function checkUsernameAvailability(username) {
+                // 서버로 아이디 중복 체크 요청을 보냅니다.
+                fetch(`/user/checkUsername/${username}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const isUsernameAvailable = data.available;
+                        if (isUsernameAvailable) {
+                            usernameAvailability.textContent = "사용 가능한 아이디입니다.";
+                            usernameAvailability.classList.remove("unavailable");
+                            usernameAvailability.classList.add("available");
+                        } else {
+                            usernameAvailability.textContent = "이미 사용 중인 아이디입니다.";
+                            usernameAvailability.classList.remove("available");
+                            usernameAvailability.classList.add("unavailable");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("아이디 중복 체크 에러:", error);
+                        // 에러 처리 로직 추가
+                    });
+            }
+        });
+    </script>
+
+    <!-- 생년월일 캘린더 스크립트 -->
+    <script>
+        $(document).ready(function() {
+            $('#birthdateInput').on('input', function() {
+                // 입력값에서 숫자만 추출
+                const input = $(this).val().replace(/\D/g, '');
+
+                // 숫자를 형식에 맞게 변경
+                if (input.length >= 8) {
+                    const year = input.slice(0, 4);
+                    const month = input.slice(4, 6);
+                    const day = input.slice(6, 8);
+
+                    // 입력된 월이 1에서 12 사이에 있는지 확인
+                    if (parseInt(month) >= 1 && parseInt(month) <= 12) {
+                        // 입력된 일이 1에서 31 사이에 있는지 확인
+                        if (parseInt(day) >= 1 && parseInt(day) <= 31) {
+                            const formattedDate = `${year}-${month}-${day}`;
+                            $(this).val(formattedDate);
+                        } else {
+                            alert('올바른 일(01-31)을 입력하세요.');
+                            $(this).val('');
+                        }
+                    } else {
+                        alert('올바른 월(01-12)을 입력하세요.');
+                        $(this).val('');
+                    }
+                }
+            });
+        });
+    </script>
+
+    <!-- 전화번호 입력 포맷팅 스크립트 -->
+    <script>
+        // 전화번호 입력을 자동으로 포맷팅하는 함수
+        function formatPhoneNumber(input) {
+            // 숫자만 추출하고, 11자리까지만 허용
+            const phoneNumber = input.value.replace(/\D/g, '').slice(0, 11);
+
+            // 전화번호 형식에 따라 포맷팅
+            if (phoneNumber.length <= 3) {
+                input.value = phoneNumber;
+            } else if (phoneNumber.length <= 7) {
+                input.value = `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3)}`;
+            } else {
+                input.value = `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3, 7)}-${phoneNumber.slice(7)}`;
+            }
+        }
+
+        // 전화번호 입력 필드에 이벤트 리스너 추가
+        const phoneInput = document.querySelector(".phone-box"); // 전화번호 입력 필드의 클래스에 맞게 수정
+        phoneInput.addEventListener("input", function () {
+            formatPhoneNumber(this);
+        });
+    </script>
+
+    <!-- 인증번호 요청 스크립트 -->
+    <script>
+        $(document).ready(function() {
+            // 인증번호 생성 함수
+            function generateVerificationCode() {
+                const codeLength = 6;
+                const min = Math.pow(10, codeLength - 1);
+                const max = Math.pow(10, codeLength) - 1;
+                const randomCode = Math.floor(Math.random() * (max - min + 1)) + min;
+
+                return randomCode.toString().padStart(codeLength, '0');
+            }
+
+            // 인증번호 요청 버튼 클릭 이벤트
+            $('#requestCodeBtn').click(function(event) {
+                event.preventDefault(); // 기본 동작 막기
+                const verificationCode = generateVerificationCode();
+                $('#verificationCode').text('인증번호: ' + verificationCode);
+            });
+        });
+    </script>
+    <!-- 인증번호 확인 스크립트 -->
+    <script>
+        $(document).ready(function() {
+            // 인증번호 확인 버튼 클릭 이벤트
+            $('#verifyButton').click(function(event) {
+                event.preventDefault(); // 기본 동작 막기
+                const enteredCode = $('#verificationInput').val().trim(); // 입력된 인증번호
+                const generatedCode = $('#verificationCode').text().split(': ')[1]; // 생성된 인증번호
+
+                if (enteredCode === generatedCode) {
+                    // 인증번호가 일치할 때만 회원가입 버튼 활성화
+                    $('#submitBtn').prop('disabled', false); // 회원가입 버튼 활성화
+                } else {
+                    alert('인증번호가 일치하지 않습니다.');
+                    // 인증번호가 일치하지 않으면 회원가입 버튼 비활성화
+                    $('#submitBtn').prop('disabled', true); // 회원가입 버튼 비활성화
+                }
+            });
+
+            // Enter 키를 눌렀을 때 인증번호 확인 버튼 클릭 이벤트 호출
+            $('#verificationInput').keypress(function(event) {
+                if (event.which === 13) {
+                    event.preventDefault();
+                    const enteredCode = $('#verificationInput').val().trim(); // 입력된 인증번호
+                    const generatedCode = $('#verificationCode').text().split(': ')[1]; // 생성된 인증번호
+
+                    if (enteredCode === generatedCode) {
+                        // 인증번호가 일치할 때만 회원가입 버튼 활성화
+                        $('#submitBtn').prop('disabled', false); // 회원가입 버튼 활성화
+                    } else {
+                        alert('인증번호가 일치하지 않습니다.');
+                        // 인증번호가 일치하지 않으면 회원가입 버튼 비활성화
+                        $('#submitBtn').prop('disabled', true); // 회원가입 버튼 비활성화
+                    }
+                }
+            });
+        });
+    </script>
+
+    <!-- 개인정보 수집 동의 -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const privacyCheckbox = document.getElementById("privacyCheckbox");
+            const form = document.querySelector("form");
+
+            form.addEventListener("submit", function (event) {
+                if (!privacyCheckbox.checked) {
+                    event.preventDefault(); // 폼 제출을 막습니다.
+                    alert("개인정보 수집 및 이용 내용에 동의해야 회원가입이 가능합니다.");
+                }
+            });
+        });
+    </script>
+
+</div>
+</body>
+</html>

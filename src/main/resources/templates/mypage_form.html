@@ -1,0 +1,90 @@
+<html layout:decorate="~{layout}">
+
+<head>
+    <!-- CSS 불러오기 -->
+    <link rel="stylesheet" type="text/css " href="/mypage.css">
+    <!-- SweetAlert 2 스크립트 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+<!-- 마이페이지 -->
+<div class="my-wrap" layout:fragment="content">
+    <div class="id-section">
+        <p class="logo-text">
+            <a href="/" style="width: 200px;">뭐하지 또? 또 가지 뭐! </a>
+        </p>
+        <h1>MY PAGE</h1>
+        <!-- 이미지 -->
+        <div class="avatar">
+            <div class="img-box">
+                <img src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2Ffe%2F94%2F01%2Ffe9401b82ec1a52d876b76774da990ac.jpg&type=sc960_832"
+                     alt="프로필 이미지">
+                <label for="profileImageInput" class="change-profile-button"><span>변경</span></label>
+                <input type="file" id="profileImageInput" style="display: none;">
+            </div>
+        </div>
+        <!-- 사용자 이름 -->
+        <h2><span th:text="${siteUser.username}"></span></h2>
+        <h4 style="margin-top: 10px "><span th:text="${siteUser.email}"></span></h4>
+
+        <!-- 메뉴 -->
+        <ul class="">
+            <li><a href="">프로필 정보</a></li>
+        </ul>
+    </div>
+    <div class="ch-section">
+        <!-- 정보수정 폼 -->
+        <div class="join-box">
+            <form th:action="@{/user/updateProfile}" method="post">
+                <div class="form-box">
+                    <table>
+                        <!-- 사용자 정보 -->
+                        <tr class="table-box ">
+                            <th><span class=" user">이름</span><span class="body" th:text="${siteUser.name}"></span></th>
+                        </tr>
+                        <tr class="table-box ">
+                            <th><span class=" user">닉네임</span><span class="body" th:text="${siteUser.nickname}"></span></th>
+                        </tr>
+                        <tr class="table-box ">
+                            <th><span class=" user">이메일</span><span class="body" th:text="${siteUser.email}"></span></th>
+                        </tr>
+                        <tr class="table-box ">
+                            <th><span class=" user">전화번호</span><span class="body" th:text="${siteUser.phone}"></span></th>
+                        </tr>
+                        <tr class="table-box ">
+                            <th><span class="user">비밀번호</span><span class="body" th:text="${siteUser.password}"></span></th>
+                            <td>
+                                <a th:href="@{|/user/password_modify|}"
+                                   class="btn btn-sm btn-outline-secondary"
+                                   sec:authorize="isAuthenticated()"
+                                   th:if="${siteUser.username != null and #authentication.getPrincipal().getUsername() == siteUser.username}">
+                                    변경
+                                </a>
+                            </td>
+                        </tr>
+                        <tr class="table-box ">
+                            <th><span class="pro-text"> 핸드폰 프로모션 정보 통신 동의</span></th>
+                            <td>
+                                <div class="btn" id="toggleBtn">off</div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div style="display: flex;">
+                        <button class="submit" type="button" id="otherButton" onclick="redirectToMainPage()">확인</button>
+                        <button class="submit" type="button" id="informationButton" onclick="window.location.href='/user/mypage_information'" style="margin-right: 10px">정보 수정</button>
+                        <button class="submit" type="button" id="withdrawButton" onclick="window.location.href='/user/mypage_withdrawal'">탈퇴</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- On/Off 변경 시 상단에 나타날 안내창 -->
+    <div id="notificationBar"></div>
+
+
+</div>
+</body>
+
+</html>

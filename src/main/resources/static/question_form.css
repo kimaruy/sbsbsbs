@@ -1,0 +1,115 @@
+@font-face {
+  font-family: "Humanbumsuk";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-2@1.0/Humanbumsuk.woff2")
+  format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+/* 노멀라이징 */
+* {
+  margin: 0;
+  padding: 0;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+ul,
+li {
+  list-style: none;
+}
+
+/* 스타일 */
+
+/* 게시물 작성 */
+
+h1 {
+  margin-top: 100px;
+  text-align: center;
+  font-family: "Humanbumsuk";
+  font-size: 50px;
+}
+
+input,
+select,
+textarea {
+  outline: none; /* 기본 포커스 효과 제거 */
+}
+
+table tr td input:focus,
+table tr td select:focus,
+table tr td textarea:focus {
+  border: 1px solid #3b91ff; /* 포커스 시 보더 스타일 변경 */
+}
+
+
+.table-stbox {
+  width: 1100px;
+  margin: 0 auto;
+  margin-top: 30px;
+  margin-bottom: 100px ;
+  border: 1px solid #3b91ff;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.table-stbox .board-box {
+  width: 200px;
+  height: 30px;
+}
+
+.table-stbox tr td {
+  padding-left: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.table-stbox tr td,
+.table-stbox tr th {
+  padding: 20px 20px;
+}
+
+.table-stbox tr td > select {
+  width: 200px;
+  height: 50px;
+  padding: 0 20px;
+  border-radius: 15px;
+  border: 1px solid #dadada;
+}
+.table-stbox tr td > input,
+.table-stbox tr td > textarea {
+  width: 900px;
+  padding: 20px;
+  border-radius: 15px;
+  border: 1px solid #dadada;
+}
+
+.table-stbox tr td > select option:checked {
+  border-radius: 15px;
+}
+
+.table-stbox tr td > textarea {
+  resize: none;
+  height: 200px;
+}
+
+.table-stbox tr td > button {
+  width: 200px;
+  height: 50px;
+  box-shadow: 0 2px 6px 0 rgba(68, 68, 68, 0.08);
+  border: 1px solid #dadada;
+  border-radius: 10px;
+  background-color: #fff;
+  cursor: pointer ;
+}
+
+.table-stbox tr td > button:hover {
+  border: 2px solid #3b91ff;
+  background-color: #f0f8ff;
+  color: black;
+  font-weight: bold;
+}
+
+.table-stbox tr td > .button-2 {
+  margin-right: 20px;
+}

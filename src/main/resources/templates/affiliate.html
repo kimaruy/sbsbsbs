@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+    <!-- ... (스타일 및 기타 메타 정보) ... -->
+</head>
+<body>
+<div layout:fragment="content" class="container my-3" style="margin-top: 100px !important;">
+    <h1> 축제 제휴문의</h1>
+    <h3> 축제관련 제휴를 원하신다면 여기에 작성해 주세요.</h3>
+
+    <form action="/question/submit" method="post" enctype="multipart/form-data">
+        <!-- 제목 입력란 -->
+        <div class="form-group">
+            <label for="title">제목:</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+
+        <!-- 상세 설명 입력란 -->
+        <div class="form-group">
+            <label for="description">상세 설명:</label>
+            <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+        </div>
+
+        <!-- 첨부 파일 입력란 -->
+        <div class="form-group">
+            <label for="file">첨부 파일:</label>
+            <input type="file" class="form-control-file" id="file" name="file">
+        </div>
+
+        <!-- 링크 입력란 (옵션) -->
+        <div class="form-group">
+            <label for="link">링크:</label>
+            <input type="url" class="form-control" id="link" name="link">
+        </div>
+
+        <!-- 작성 버튼 -->
+        <button type="submit" class="btn btn-primary">작성</button>
+    </form>
+</div>
+</body>
+</html>

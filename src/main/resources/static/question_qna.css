@@ -1,0 +1,142 @@
+h1 {
+  text-align: center;
+  margin-top: 5%;
+  font-size: 60px;
+}
+
+h3 {
+  text-align: center;
+  margin-top: 5%;
+  font-size: 20px;
+}
+
+input {
+  border-bottom: 2px solid gray;
+  margin-left: 1520px;
+  width: 300px;
+  height: 33px;
+  font-size: 16px;
+  text-align: center;
+  border-radius: 5px;
+  border-width: 0.5px;
+  position: relative;
+  top: 30%;
+  right: 10%;
+}
+
+.search {
+  width: 50px;
+  height: 33px;
+  font-size: 15px;
+  margin-left: 5px;
+  border-color: skyblue;
+  border-radius: 10%;
+  border-width: 1px;
+  background-color: #00bfff;
+  position: relative;
+  top: 30%;
+  right: 10%;
+}
+
+.search:hover {
+  cursor: pointer;
+  background-color: #1e90ff;
+  transition: background-color 0.3s;
+}
+
+.adminbutton {
+  height: 50px;
+}
+
+.adminbutton1 {
+  width: 100px;
+  height: 40px;
+  font-size: 19px;
+  border-radius: 15px;
+  cursor: pointer;
+  background-color: white;
+  font-weight: bold;
+  position: relative;
+  top: 1600%;
+  left: 81%;
+}
+
+.adminbutton1:hover {
+  background-color: #1e90ff;
+}
+
+.free {
+  text-align: center;
+  width: 80%;
+  margin: 20px auto;
+  margin-top: 40px;
+  margin-bottom: 115px;
+  border-collapse: collapse;
+}
+
+th {
+  border-top: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  padding: 12px;
+  text-align: center;
+  font-size: 18px;
+}
+
+td {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  padding: 20px;
+  text-align: center;
+}
+
+th {
+  background-color: #1e90ff;
+}
+
+tr:nth-child(even) {
+  background-color: white;
+}
+
+td:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.festival-pagination {
+  margin-top: 40px; /* 페이지 번호와 축제 리스트 간격 조절 */
+  margin-bottom: 40px;
+  text-align: center; /* 페이지 번호 가운데 정렬 */
+}
+
+.festival-pagination ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center; /* 페이지 번호 수평 중앙 정렬 */
+}
+
+.page-number {
+  margin: 0 5px; /* 페이지 번호 간격 조절 */
+  font-size: 25px; /* 페이지 번호 글꼴 크기 */
+}
+
+.page-number a {
+  text-decoration: none; /* 링크 밑줄 제거 */
+  color: #333; /* 페이지 번호 색상 */
+  padding: 10px 20px; /* 페이지 번호 내 여백 */
+  border: 1px solid #ccc; /* 페이지 번호 테두리 설정 */
+  border-radius: 5px; /* 페이지 번호 모서리 둥글게 */
+  transition: background-color 0.3s; /* 호버 효과 애니메이션 설정 */
+}
+
+.page-number a:hover {
+  background-color: #1e90ff; /* 호버 시 배경색 변경 */
+  color: white; /* 호버 시 텍스트 색상 변경 */
+}
+
+.current-page a {
+  background-color: #1e90ff;
+  color: white;
+  border-color: #ccc;
+}

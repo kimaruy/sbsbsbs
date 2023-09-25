@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/festival_list.css">
+
+    <!--  제이쿼리 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // 필터 버튼 클릭 시
+            $("#filter-button").click(function () {
+                var selectedRegion = $("#region-select").val(); // 선택한 지역 값 가져오기
+
+                // 모든 축제 항목을 숨김
+                $(".festival-item").hide();
+
+                // 선택한 지역과 일치하는 축제 항목을 표시
+                $(".festival-item").each(function () {
+                    var festivalRegion = $(this).find(".festival-region").text(); // 각 축제의 지역 가져오기
+                    if (selectedRegion === "" || selectedRegion === festivalRegion) {
+                        $(this).show();
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+<div layout:fragment="content" class="container my-3">
+    <div><br><br><br><br></div>
+    <h1 style="margin-left: 10% !important;">진행 중인 축제 리스트</h1>
+
+    <br>
+    <br>
+    <div class="festival-search" style="margin-left: 10% !important;">
+        <select id="region-select">
+            <option value="">전체 지역</option>
+            <option value="서울">서울</option>
+            <option value="인천">인천</option>
+            <option value="강원">강원</option>
+            <option value="대전">대전</option>
+            <option value="세종">세종</option>
+            <option value="대구">대구</option>
+            <option value="울산">울산</option>
+            <option value="부산">부산</option>
+            <option value="광주">광주</option>
+            <option value="제주">제주</option>
+        </select>
+        <button id="filter-button">찾기</button>
+    </div>
+
+    <div class="festival-list">
+        <div class="festival-item" th:each="festival : ${festivals}">
+            <a th:href="@{|/festival/detail/${festival.id}|}">
+                <img th:src="${festival.picture}" alt="축제 이미지">
+                <h2 th:text="${festival.title}">축제 제목</h2>
+                <p class="festival-region" th:text="${festival.region}">축제 지역</p>
+                <p class="festival-classification" th:text="${festival.classification}">축제 지역</p>
+                <p th:text="${festival.event_Period}">축제 기간</p>
+            </a>
+        </div>
+    </div>
+
+    <div class="festival-pagination">
+        <!-- 이전 페이지로 이동하는 링크 -->
+        <a th:if="${currentPage > 1}" th:href="@{|/festival/list/page/${currentPage - 1}|}">&lt;</a>
+
+        <!-- 페이지 버튼 표시 -->
+        <span th:each="pageNum : ${#numbers.sequence(1, totalPages)}">
+        <a th:if="${pageNum == currentPage}" th:text="${pageNum}" class="page-number current-page"></a>
+        <a th:if="${pageNum != currentPage}" th:href="@{|/festival/list/page/${pageNum}|}" th:text="${pageNum}" class="page-number"></a>
+    </span>
+
+        <!-- 다음 페이지로 이동하는 링크 -->
+        <a th:if="${currentPage < totalPages}" th:href="@{|/festival/list/page/${currentPage + 1}|}">&gt;</a>
+    </div>
+</div>
+</body>
+</html>

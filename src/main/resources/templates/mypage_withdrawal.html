@@ -1,0 +1,88 @@
+<html layout:decorate="~{layout}">
+<head>
+    <!-- CSS 불러오기 -->
+    <link rel="stylesheet" type="text/css " href="/mypage.css">
+    <!-- SweetAlert 2 스크립트 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        .sece-box {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .sece-box label {
+            width: 150px;
+        }
+
+        .sece-box input {
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="my-wrap">
+    <div class="id-section">
+        <p class="logo-text">
+            <a href="/" style="width: 200px;">뭐하지 또? 또 가지 뭐! </a>
+        </p>
+        <h1>MY PAGE</h1>
+        <div class="avatar">
+            <div class="img-box">
+                <img src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2Ffe%2F94%2F01%2Ffe9401b82ec1a52d876b76774da990ac.jpg&type=sc960_832"
+                     alt="프로필 이미지">
+                <label for="profileImageInput" class="change-profile-button"><span>변경</span></label>
+                <input type="file" id="profileImageInput" style="display: none;">
+            </div>
+        </div>
+        <h2><span th:text="${siteUser.username}"></span></h2>
+        <h4 style="margin-top: 10px "><span th:text="${siteUser.email}"></span></h4>
+        <ul class="">
+            <li><a href="">탈퇴</a></li>
+        </ul>
+    </div>
+
+    <div class="ch-section">
+        <div class="join-box">
+            <h2 style="text-align: center; margin-bottom: 30px; font-size: 35px;">회원 탈퇴</h2>
+            <p>계정을 삭제하기 위해 서는 본인 확인을 위해 비밀번호를 입력해 주세요.</p>
+            <form th:action="@{/user/mypage_withdrawal}" method="post">
+
+                <div>
+                    <div class="sece-box">
+                        <label for="currentPassword"
+                               style="padding: 10px 20px; font-size: 20px; font-weight: 500;">아이디 </label>
+                        <input type="text" id="currentPassword" name="currentPassword" disabled
+                               th:value="${siteUser.username}"
+                               style="width: 50%; height: 50px; box-shadow: 0 2px 6px 0 rgba(68, 68, 68, 0.08); border: 1px solid #dadada; border-radius: 5px; padding-left: 15px; background-color: #fff;">
+                        <br><br>
+                    </div>
+                </div>
+
+                <div class="sece-box">
+                    <label for="password"
+                           style="padding: 10px 20px; font-size: 20px; font-weight: 500;">비밀번호 입력 </label>
+                    <input type="password" id="password" name="password" required
+                           style="width: 50%; height: 50px; box-shadow: 0 2px 6px 0 rgba(68, 68, 68, 0.08); border: 1px solid #dadada; border-radius: 5px; padding-left: 15px;">
+                    <br><br>
+                </div>
+
+                <!-- 오류 메시지 표시 부분 -->
+                <div th:if="${error}">
+                    <p class="text-danger" th:text="${error}"></p>
+                </div>
+
+                <button class="btn btn-sm btn-outline-secondary"
+                        style="color: black; width: 100%; height: 50px; box-shadow: 0 2px 6px 0 rgba(68, 68, 68, 0.08); border: 1px solid #dadada; border-radius: 10px; background-color: #fff; cursor: pointer; margin-top: 30px;">
+                    탈퇴하기
+                </button>
+                <button type="button" onclick="window.location.href='/user/mypage'"
+                        style="width: 100%; height: 50px; box-shadow: 0 2px 6px 0 rgba(68, 68, 68, 0.08); border: 1px solid #dadada; border-radius: 10px; background-color: #fff; cursor: pointer; margin-top: 30px;">
+                    취소
+                </button>
+            </form>
+
+        </div>
+    </div>
+</body>
+</html>

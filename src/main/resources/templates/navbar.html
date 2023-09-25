@@ -1,0 +1,77 @@
+
+<nav th:fragment="navbarFragment" class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+    <div class="wrap-box">
+        <!-- 상단바 -->
+        <div class="top-bar-box ">
+            <ul class="logo-box ">
+                <li><a href="/"> <img src="https://cdn.jsdelivr.net/gh/gsw05018/test-img/a.svg" alt=""></a></li>
+            </ul>
+            <ul class="menu-box ">
+                <li class=""><a class="a-1" href="/"><i class="fa-solid fa-house">
+                </i></a></li>
+                <li class=""><a href="/festival/list"><span>축제정보센터</span></a>
+                    <!-- 2차메뉴 -->
+                    <div class="nav-2-menu">
+                        <ul class="menu-1">
+                            <li><a href="/festival/list"><span>축제정보</span></a></li>
+                        </ul>
+
+                        <ul class="menu-2">
+                            <li><a href="/question/reply_list">축제리뷰</a></li>
+                            <li><a href="/question/list">자유게시판</a></li>
+                        </ul>
+                        <ul class="menu-3">
+                            <li><a href="/question/qna_list">FAQ</a></li>
+                            <li><a href="/question/affiliate">제휴</a></li>
+                            <li><a href="/question/report">신고</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="">
+                    <a href="/question/reply_list"><span>축제커뮤니티</span></a>
+                </li>
+                <li><a href="/question/notification_list"><span>공지사항</span></a></li>
+                <li><a href="/user/center_list"><span>고객센터</span></a>
+                </li>
+            </ul>
+
+            <ul class="login-box ">
+                <li><a href="#">
+                    <div class="se-box">
+                        <input type="text" id="seach-text" name="seach-text" placeholder="어디로, 어떤 축제를 가실 예정인가요?">
+                        <i class="fa-solid fa-magnifying-glass se-icon "></i>
+                    </div>
+                </a>
+                </li>
+
+                <li class="lo-box" style=" cursor : pointer;">
+                    <i class="fa-solid fa-circle-user btn-i" ></i>
+                    <div class="toggle-menu">
+                        <ul sec:authorize="isAnonymous()">
+                            <li><a class="nav-link" th:href="@{/user/login}">로그인</a></li>
+                            <li><a class="nav-link" th:href="@{/user/signup}">회원가입</a></li>
+                        </ul>
+                        <ul sec:authorize="isAuthenticated()">
+                            <li><a class="nav-link" th:href="@{/user/mypage}">마이페이지</a></li>
+                            <li><a class="nav-link" th:href="@{/user/logout}">로그아웃</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $(document).on("click", ".wrap-box > .top-bar-box > .login-box > .lo-box i", function () {
+                $(this).siblings(".toggle-menu").toggleClass("active");
+            });
+        });
+    </script>
+
+</nav>

@@ -1,0 +1,155 @@
+<html layout:decorate="~{layout}">
+<head>
+    <!-- CSS 불러오기 -->
+    <link rel="stylesheet" type="text/css " href="/mypage.css">
+    <!-- SweetAlert 2 스크립트 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style >
+        .infor-box{
+            margin-bottom: 10px ;
+            display: flex;
+        }
+
+      .join-box  p{
+            margin-left: 190px ;
+            margin-bottom: 10px ;
+        }
+
+        input{
+            width: 600px;
+        }
+    </style>
+</head>
+
+<body>
+<!-- 마이페이지 -->
+<div class="my-wrap" layout:fragment="content">
+    <div class="id-section">
+        <p class="logo-text">
+            <a href="/" style="width: 200px;">뭐하지 또? 또 가지 뭐! </a>
+        </p>
+        <h1>MY PAGE</h1>
+        <!--     이미지    -->
+        <div class="avatar">
+            <div class="img-box">
+                <img src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2F736x%2Ffe%2F94%2F01%2Ffe9401b82ec1a52d876b76774da990ac.jpg&type=sc960_832"
+                     alt="프로필 이미지">
+                <label for="profileImageInput" class="change-profile-button"><span>변경</span></label>
+                <input type="file" id="profileImageInput" style="display: none;">
+            </div>
+        </div>
+        <!--   사용자이름  -->
+        <h2><span th:text="${siteUser.name}"></span></h2>
+        <h4 style="margin-top: 10px "><span th:text="${siteUser.email}"></span></h4>
+        <!--    메뉴   -->
+        <ul class="">
+            <li><a href="#">정보 수정</a></li>
+        </ul>
+    </div>
+
+    <div class="ch-section">
+        <!--   정보수정 폼   -->
+        <div class="join-box">
+            <h2 style="text-align: center; margin-bottom: 50px; font-size: 35px;">회원 정보 수정</h2>
+            <form id="userProfileForm" th:action="@{/user/updateProfile}" method="post">
+                <!-- 닉네임 입력 폼 -->
+                <div class="infor-box">
+                    <label for="newNickname" style="padding: 10px 20px; font-size: 20px; font-weight: 500; width: 150px;">닉네임</label>
+                    <input type="text" id="newNickname" name="nickname" maxlength="50" placeholder="변경하실 닉네임을 입력해주세요" th:value="${siteUser.nickname}" style=" height: 50px; box-shadow: 0 2px 6px 0 rgba(68, 68, 68, 0.08); border: 1px solid #dadada; border-radius: 5px; padding-left: 15px;">
+                </div>
+                <!-- 전화번호 입력 폼 -->
+                <div class="infor-box">
+                    <label for="newPhoneNumber" style="padding: 10px 20px; font-size: 20px; font-weight: 500; width: 150px;">전화번호</label>
+                    <input type="text" id="newPhoneNumber" name="phone" placeholder="변경하실 전화번호를 입력해주세요" th:value="${siteUser.phone}" style=" height: 50px; box-shadow: 0 2px 6px 0 rgba(68, 68, 68, 0.08); border: 1px solid #dadada; border-radius: 5px; padding-left: 15px;">
+                </div>
+                <!-- 이메일 입력 폼 -->
+                <div class="infor-box">
+                    <label for="newEmail" style="padding: 10px 20px; font-size: 20px; font-weight: 500; width: 150px;">이메일</label>
+                    <input type="text" id="newEmail" name="email" placeholder="변경하실 이메일을 입력해주세요" th:value="${siteUser.email}" style="height: 50px; box-shadow: 0 2px 6px 0 rgba(68, 68, 68, 0.08); border: 1px solid #dadada; border-radius: 5px; padding-left: 15px;">
+                </div>
+                <!-- 수정하기 버튼 -->
+                <div style="display: flex">
+                    <button type="submit" id="updateProfileButton" style="margin-right: 20px; width: 100%; height: 50px; box-shadow: 0 2px 6px 0 rgba(68, 68, 68, 0.08); border: 1px solid #dadada; border-radius: 10px; background-color: #fff; cursor: pointer; margin-top: 30px;">
+                        수정하기
+                    </button>
+                    <button type="button" onclick="window.location.href='/user/mypage'" style="width: 100%; height: 50px; box-shadow: 0 2px 6px 0 rgba(68, 68, 68, 0.08); border: 1px solid #dadada; border-radius: 10px; background-color: #fff; cursor: pointer; margin-top: 30px;">
+                        취소
+                    </button>
+                </div>
+            </form>
+            <!-- 업데이트 오류 메시지 -->
+            <p th:text="${updateError}" style="color: red;"></p>
+        </div>
+    </div>
+    <script>
+        // 전화번호 입력 필드 가져오기
+        const phoneNumberInput = document.getElementById("newPhoneNumber");
+
+        phoneNumberInput.addEventListener("input", () => {
+            const phoneNumberRegex = /^(\d{3})(\d{1,4})(\d{1,4})?$/;
+            const phoneNumber = phoneNumberInput.value.replace(/-/g, ''); // 하이픈 제거
+
+            if (phoneNumberRegex.test(phoneNumber)) {
+                const formattedPhoneNumber = phoneNumber.replace(phoneNumberRegex, "$1-$2-$3");
+                phoneNumberInput.value = formattedPhoneNumber;
+            }
+        });
+
+        // 수정하기 버튼 클릭 시
+        document.getElementById("updateProfileButton").addEventListener("click", () => {
+            // 입력된 정보 가져오기
+            const newNickname = document.getElementById("newNickname").value;
+            const newPhoneNumber = phoneNumberInput.value; // 수정된 전화번호 사용
+            const newEmail = document.getElementById("newEmail").value;
+
+            // 입력값 유효성 검사
+            const nicknameError = document.getElementById("nicknameError");
+            const phoneError = document.getElementById("phoneError");
+            const emailError = document.getElementById("emailError");
+
+            // 빈 입력값 및 형식 검사
+            nicknameError.textContent = "";
+            phoneError.textContent = "";
+            emailError.textContent = "";
+
+            if (newNickname.trim() === "") {
+                nicknameError.textContent = "닉네임을 입력해주세요.";
+            } else if (newNickname.length > 10 || /[!@#$%^&*(),.?":{}|<>]/.test(newNickname)) {
+                nicknameError.textContent = "닉네임은 10자 이내이며 특수 문자를 사용할 수 없습니다.";
+            }
+
+            if (newPhoneNumber.trim() === "") {
+                phoneError.textContent = "전화번호를 입력해주세요.";
+            } else if (!/^01[0-9]-\d{3,4}-\d{4}$/.test(newPhoneNumber)) {
+                phoneError.textContent = "올바른 전화번호 형식이 아닙니다.";
+            }
+
+            if (newEmail.trim() === "") {
+                emailError.textContent = "이메일을 입력해주세요.";
+            } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(newEmail)) {
+                emailError.textContent = "올바른 이메일 형식이 아닙니다.";
+            }
+
+            // 서버 구현해야합니다
+
+            // SweetAlert2 등을 사용하여 수정 완료 메시지 표시
+            if (!nicknameError.textContent && !phoneError.textContent && !emailError.textContent) {
+                Swal.fire({
+                    icon: "success",
+                    title: "성공",
+                    text: "정보가 성공적으로 변경되었습니다.",
+                    confirmButtonText: '확인'
+                }).then(() => {
+                    // 리다이렉트할 URL을 여기에 지정합니다.
+                    const myPageURL = '/user/mypage'; // 마이페이지 URL로 변경해주세요.
+                    window.location.href = myPageURL; // 리다이렉트 실행
+                });
+            }
+        });
+    </script>
+</div>
+
+</body>
+
+
+</html>
